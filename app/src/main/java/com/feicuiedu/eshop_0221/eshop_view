@@ -31,3 +31,11 @@
 任务：实现Spalsh页面。
 明天：主页面搭建：第三方的控件
 
+20170222:
+主页面：
+1. 底部导航栏：BottomBar
+    1. 添加依赖：compile 'com.roughike:bottom-bar:2.1.1'
+    2. 创建一个xml的文件：res/xml/bottom_bar.xml
+    3. 布局中使用
+    4. 在代码里面设置监听事件
+

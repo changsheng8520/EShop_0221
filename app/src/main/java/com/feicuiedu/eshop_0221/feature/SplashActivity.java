@@ -30,8 +30,6 @@ public class SplashActivity extends AppCompatActivity implements Animator.Animat
         initView();
 
         // ctrl+alt+v 提取变量
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.test);
-        mIvSplash.startAnimation(animation);
     }
 
     private void initView() {
