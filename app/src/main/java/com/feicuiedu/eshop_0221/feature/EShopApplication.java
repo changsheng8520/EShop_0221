@@ -16,7 +16,7 @@ public class EShopApplication extends Application {
 
         if (LeakCanary.isInAnalyzerProcess(this)) {
 
-            // 这个是用于分析内存的线程，我们不能再这里面初始化我们项目
+            // 这个是用于分析内存的线程，我们不能在这里面初始化我们项目
             return;
         }
         LeakCanary.install(this);

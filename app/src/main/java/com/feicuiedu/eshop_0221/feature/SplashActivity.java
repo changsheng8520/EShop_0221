@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.feicuiedu.eshop_0221.R;
@@ -27,6 +29,9 @@ public class SplashActivity extends AppCompatActivity implements Animator.Animat
         // 完成视图的操作
         initView();
 
+        // ctrl+alt+v 提取变量
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.test);
+        mIvSplash.startAnimation(animation);
     }
 
     private void initView() {
