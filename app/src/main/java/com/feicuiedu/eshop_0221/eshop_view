@@ -38,4 +38,13 @@
     2. 创建一个xml的文件：res/xml/bottom_bar.xml
     3. 布局中使用
     4. 在代码里面设置监听事件
+2. Fragment 切换
+
+总结：
+1. 反馈的问题解答：动画、内存泄漏
+2. 主页面：BottomBar，Fragment的切换
+3. 消息的结构。
+任务：主页面一定要完成
+明天：网络：OkHttp
+
 

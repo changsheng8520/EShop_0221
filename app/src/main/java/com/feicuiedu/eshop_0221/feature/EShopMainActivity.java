@@ -6,14 +6,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import com.feicuiedu.eshop_0221.R;
 import com.feicuiedu.eshop_0221.base.utils.TestFragment;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
-
-import junit.framework.Test;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -115,9 +112,7 @@ public class EShopMainActivity extends AppCompatActivity implements OnTabSelectL
         }
 
         transaction.commit();
-
         mCurrentFragment=target;
-
     }
 
     // 恢复因为系统重启造成的Fragmentmanager里面恢复的Fragment
