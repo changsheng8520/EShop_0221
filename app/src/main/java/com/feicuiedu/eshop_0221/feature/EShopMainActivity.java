@@ -8,7 +8,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.feicuiedu.eshop_0221.R;
-import com.feicuiedu.eshop_0221.base.utils.TestFragment;
+import com.feicuiedu.eshop_0221.base.TestFragment;
+import com.feicuiedu.eshop_0221.feature.category.CategoryFragment;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
@@ -21,7 +22,7 @@ public class EShopMainActivity extends AppCompatActivity implements OnTabSelectL
     BottomBar mBottomBar;
 
     private TestFragment mHomeFragment;
-    private TestFragment mCategoryFragment;
+    private CategoryFragment mCategoryFragment;
     private TestFragment mCartFragment;
     private TestFragment mMineFragment;
 
@@ -66,7 +67,7 @@ public class EShopMainActivity extends AppCompatActivity implements OnTabSelectL
             case R.id.tab_category:
 
                 if (mCategoryFragment==null){
-                    mCategoryFragment = TestFragment.newInstance("CategoryFragment");
+                    mCategoryFragment = CategoryFragment.newInstance();
                 }
                 switchfragment(mCategoryFragment);
 
@@ -105,7 +106,14 @@ public class EShopMainActivity extends AppCompatActivity implements OnTabSelectL
             transaction.show(target);
         }else {
             // 为了方便找到Fragment，我们是可以设置Tag
-            String tag = ((TestFragment)target).getArgumentText();
+            String tag;
+            if (target instanceof TestFragment){
+                tag = ((TestFragment)target).getArgumentText();
+            }else {
+
+                // 把类名作为tag
+                tag = target.getClass().getName();
+            }
 
             // 添加Fragment并设置Tag
             transaction.add(R.id.layout_container,target,tag);
@@ -119,7 +127,7 @@ public class EShopMainActivity extends AppCompatActivity implements OnTabSelectL
     private void retrieveFragment() {
         FragmentManager manager = getSupportFragmentManager();
         mHomeFragment = (TestFragment) manager.findFragmentByTag("HomeFragment");
-        mCategoryFragment = (TestFragment) manager.findFragmentByTag("CategoryFragment");
+        mCategoryFragment = (CategoryFragment) manager.findFragmentByTag(CategoryFragment.class.getName());
         mCartFragment = (TestFragment) manager.findFragmentByTag("CartFragment");
         mMineFragment = (TestFragment) manager.findFragmentByTag("MineFragment");
     }

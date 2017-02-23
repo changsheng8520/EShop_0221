@@ -47,4 +47,21 @@
 任务：主页面一定要完成
 明天：网络：OkHttp
 
+20170223
+总结：
+OkHttp网络请求
+1. OkHttp的基本的使用：流程一定要清楚。
+2. Call模型：概念、Call的取消
+3. 拦截器的功能：httploggingInterceptor
+    1. 依赖 2. 设置给OkHttpClient
+4. callback不能更新UI，处理：自定义一个UiCallback
+5. Okhttp加入到了项目中
+6. 构建了一个商品分类的接口，新的知识：单元测试。
+7. 创建分类的Fragment，处理了一下Toolbar的展示
+任务：
+OkHttp的使用一定要掌握！！
+商品分类的接口构建要完成。
+创建好分类页面，处理一下布局
+预习：可以试着展示一下
+明天：完成分类页面，做一些封装基类。
 

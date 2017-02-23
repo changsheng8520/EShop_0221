@@ -39,7 +39,7 @@ public class EShopClient {
                 .build();
     }
 
-    // 构建一下商品分类的接口请求
+    // 分类页面：商品分类请求
     public Call getCategory(){
         Request request = new Request.Builder()
                 .get()
