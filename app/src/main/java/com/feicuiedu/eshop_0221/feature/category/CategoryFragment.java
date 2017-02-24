@@ -27,6 +27,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnItemClick;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -47,6 +48,8 @@ public class CategoryFragment extends Fragment {
     ListView mListChildren;
 
     private List<CategoryPrimary> mData;
+    private CategoryAdapter mCategoryAdapter;
+    private ChildrenAdapter mChildrenAdapter;
 
     public static CategoryFragment newInstance() {
         return new CategoryFragment();
@@ -72,15 +75,16 @@ public class CategoryFragment extends Fragment {
         initToolbar();
 
         // ListView的展示
-        CategoryAdapter categoryAdapter = new CategoryAdapter();
-        mListCategory.setAdapter(categoryAdapter);
+        mCategoryAdapter = new CategoryAdapter();
+        mListCategory.setAdapter(mCategoryAdapter);
 
-        ChildrenAdapter childrenAdapter = new ChildrenAdapter();
-        mListChildren.setAdapter(childrenAdapter);
+        mChildrenAdapter = new ChildrenAdapter();
+        mListChildren.setAdapter(mChildrenAdapter);
 
         // 拿到数据
         if (mData != null) {
             // 可以直接更新UI
+            updateCategory();
         } else {
             // 去进行网络请求拿到数据
             Call call = EShopClient.getInstance().getCategory();
@@ -96,12 +100,42 @@ public class CategoryFragment extends Fragment {
                         CategoryRsp categoryRsp = new Gson().fromJson(response.body().string(), CategoryRsp.class);
                         if (categoryRsp.getStatus().isSucceed()) {
                             mData = categoryRsp.getData();
-                            // 数据有了之后，更新UI
+                            // 数据有了之后，数据给一级分类，默认选择第一条，二级分类才能展示
+                            updateCategory();
+
                         }
                     }
                 }
             });
         }
+    }
+
+    // 更新分类数据
+    private void updateCategory() {
+        mCategoryAdapter.reset(mData);
+        // 切换展示二级分类
+        chooseCategory(0);
+    }
+
+    // 用于根据一级分类的选项展示二级分类的内容
+    private void chooseCategory(int position) {
+        mListCategory.setItemChecked(position,true);
+        mChildrenAdapter.reset(mCategoryAdapter.getItem(position).getChildren());
+    }
+
+    // 点击一级分类：展示相应二级分类
+    @OnItemClick(R.id.list_category)
+    public void onItemClick(int postion){
+        chooseCategory(postion);
+    }
+
+    // 点击二级分类
+    @OnItemClick(R.id.list_children)
+    public void onChildrenClick(int position){
+
+        // TODO: 2017/2/24 会完善到跳转页面的
+        String name = mChildrenAdapter.getItem(position).getName();
+        Toast.makeText(getContext(),name , Toast.LENGTH_SHORT).show();
     }
 
     private void initToolbar() {
