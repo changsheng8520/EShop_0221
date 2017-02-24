@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.feicuiedu.eshop_0221.R;
+import com.feicuiedu.eshop_0221.base.BaseListAdapter;
 import com.feicuiedu.eshop_0221.network.entity.CategoryPrimary;
 
 import java.util.ArrayList;
@@ -21,53 +22,30 @@ import butterknife.ButterKnife;
  */
 
 // 一级分类的适配器
-public class CategoryAdapter extends BaseAdapter {
+public class CategoryAdapter extends BaseListAdapter<CategoryPrimary,CategoryAdapter.ViewHolder> {
 
-    private List<CategoryPrimary> mData = new ArrayList<>();
-
-    // 对外提供一个方法
-    public void reset(List<CategoryPrimary> data){
-        mData.clear();
-        mData.addAll(data);
-        notifyDataSetChanged();
+    @Override
+    protected int getItemViewLayout() {
+        return R.layout.item_primary_category;
     }
 
     @Override
-    public int getCount() {
-        return mData.size();
+    protected ViewHolder getItemViewHolder(View view) {
+        return new ViewHolder(view);
     }
 
-    @Override
-    public CategoryPrimary getItem(int position) {
-        return mData.get(position);
-    }
+    class ViewHolder extends BaseListAdapter.ViewHolder{
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        ViewHolder viewHolder = null;
-
-        if (convertView == null) {
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_primary_category, parent, false);
-            viewHolder = new ViewHolder(convertView);
-            convertView.setTag(viewHolder);
-        }
-        viewHolder = (ViewHolder) convertView.getTag();
-        viewHolder.mTextCategory.setText(mData.get(position).getName());
-        return convertView;
-    }
-
-    static class ViewHolder {
         @BindView(R.id.text_category)
         TextView mTextCategory;
 
-        ViewHolder(View view) {
-            ButterKnife.bind(this, view);
+        public ViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        protected void bind(int position) {
+            mTextCategory.setText(getItem(position).getName());
         }
     }
 }

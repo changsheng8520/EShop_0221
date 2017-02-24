@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.feicuiedu.eshop_0221.R;
+import com.feicuiedu.eshop_0221.base.BaseFragment;
 import com.feicuiedu.eshop_0221.network.EShopClient;
 import com.feicuiedu.eshop_0221.network.core.UICallback;
 import com.feicuiedu.eshop_0221.network.entity.CategoryPrimary;
@@ -35,7 +36,7 @@ import okhttp3.Response;
  * Created by gqq on 2017/2/23.
  */
 
-public class CategoryFragment extends Fragment {
+public class CategoryFragment extends BaseFragment {
 
 
     @BindView(R.id.standard_toolbar_title)
@@ -55,22 +56,13 @@ public class CategoryFragment extends Fragment {
         return new CategoryFragment();
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_category, container, false);
-        ButterKnife.bind(this, view);
-        return view;
+    protected int getContentViewLayout() {
+        return R.layout.fragment_category;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        // 初始化视图的操作
-        initView();
-    }
-
-    private void initView() {
+    protected void initView() {
 
         initToolbar();
 
@@ -119,23 +111,23 @@ public class CategoryFragment extends Fragment {
 
     // 用于根据一级分类的选项展示二级分类的内容
     private void chooseCategory(int position) {
-        mListCategory.setItemChecked(position,true);
+        mListCategory.setItemChecked(position, true);
         mChildrenAdapter.reset(mCategoryAdapter.getItem(position).getChildren());
     }
 
     // 点击一级分类：展示相应二级分类
     @OnItemClick(R.id.list_category)
-    public void onItemClick(int postion){
+    public void onItemClick(int postion) {
         chooseCategory(postion);
     }
 
     // 点击二级分类
     @OnItemClick(R.id.list_children)
-    public void onChildrenClick(int position){
+    public void onChildrenClick(int position) {
 
         // TODO: 2017/2/24 会完善到跳转页面的
         String name = mChildrenAdapter.getItem(position).getName();
-        Toast.makeText(getContext(),name , Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), name, Toast.LENGTH_SHORT).show();
     }
 
     private void initToolbar() {
@@ -175,4 +167,5 @@ public class CategoryFragment extends Fragment {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

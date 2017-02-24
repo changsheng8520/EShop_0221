@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.feicuiedu.eshop_0221.R;
+import com.feicuiedu.eshop_0221.base.BaseActivity;
 import com.feicuiedu.eshop_0221.base.TestFragment;
 import com.feicuiedu.eshop_0221.feature.category.CategoryFragment;
 import com.roughike.bottombar.BottomBar;
@@ -16,7 +17,7 @@ import com.roughike.bottombar.OnTabSelectListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class EShopMainActivity extends AppCompatActivity implements OnTabSelectListener {
+public class EShopMainActivity extends BaseActivity implements OnTabSelectListener {
 
     @BindView(R.id.bottom_bar)
     BottomBar mBottomBar;
@@ -29,18 +30,13 @@ public class EShopMainActivity extends AppCompatActivity implements OnTabSelectL
     private Fragment mCurrentFragment;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_eshop_main);
-
-        ButterKnife.bind(this);
-
-        initView();
-
+    protected int getContentViewLayout() {
+        return R.layout.activity_eshop_main;
     }
 
     // 视图的初始化操作
-    private void initView() {
+    @Override
+    protected void initView() {
 
         // 可以看一下Fragmentmanager里面是不是已经有了这些Fragment
         retrieveFragment();

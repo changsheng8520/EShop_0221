@@ -10,29 +10,24 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.feicuiedu.eshop_0221.R;
+import com.feicuiedu.eshop_0221.base.BaseActivity;
 import com.feicuiedu.eshop_0221.base.utils.LogUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SplashActivity extends AppCompatActivity implements Animator.AnimatorListener {
+public class SplashActivity extends BaseActivity implements Animator.AnimatorListener {
 
     @BindView(R.id.image_splash)
     ImageView mIvSplash;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-        ButterKnife.bind(this);
-
-        // 完成视图的操作
-        initView();
-
-        // ctrl+alt+v 提取变量
+    protected int getContentViewLayout() {
+        return R.layout.activity_splash;
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
         /**
          * 属性动画来完成：ViewPropertAnimator针对于View操作的动画的类
          * 1. 针对于View来操作的
@@ -53,6 +48,8 @@ public class SplashActivity extends AppCompatActivity implements Animator.Animat
 
     }
 
+
+
     // 动画开始的时候调用
     @Override
     public void onAnimationStart(Animator animation) {
@@ -64,9 +61,7 @@ public class SplashActivity extends AppCompatActivity implements Animator.Animat
     public void onAnimationEnd(Animator animation) {
         Intent intent = new Intent(this,EShopMainActivity.class);
         startActivity(intent);
-        // 设置转场的效果
-        overridePendingTransition(R.anim.push_right_in,R.anim.push_right_out);
-        finish();
+        finishWithDefault();
     }
 
     // 动画取消的时候调用
