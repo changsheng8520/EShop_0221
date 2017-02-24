@@ -6,10 +6,14 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.feicuiedu.eshop_0221.R;
 
@@ -53,14 +57,47 @@ public class CategoryFragment extends Fragment {
 
     private void initView() {
 
+        initToolbar();
+
+        // ListView的展示
+
+    }
+
+    private void initToolbar() {
+        // Fragment显示选项菜单
+        setHasOptionsMenu(true);
         // 处理toolbar
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(mToolbar);
         // 处理actionbar不展示默认的标题
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        // 设置左上方的返回箭头
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mToolbarTitle.setText(R.string.category_title);
+    }
 
-        // ListView的展示
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.fragment_category,menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int itemId = item.getItemId();
+
+        // 返回箭头
+        if (itemId==android.R.id.home){
+            getActivity().onBackPressed();
+            return true;
+        }
+
+        if (itemId==R.id.menu_search){
+
+            // TODO: 2017/2/24 后期会跳转到搜素页面上
+            Toast.makeText(getContext(), "点击了搜索", Toast.LENGTH_SHORT).show();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
