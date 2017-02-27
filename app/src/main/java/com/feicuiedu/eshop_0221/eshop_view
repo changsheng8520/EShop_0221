@@ -82,6 +82,21 @@ OkHttp的使用一定要掌握！！
     CircleIndicator:
           1. 添加依赖：compile 'me.relex:circleindicator:1.2.2@aar'
           2. 使用
-2. 封装的实现效果：
+2. 封装的实现效果
+
+总结：
+1. 构建首页的数据及测试
+2. 自定义BannerLayout
+    1. 第三方的控件
+    2. 组合控件的模式来自定义
+    3. 轮播的效果：计时器
+3. 适配器
+    ViewPager的PagerAdapter
+    为了更加的广泛适用，封装了一下
+    ViewHolder,结合BaseAdapter的ViewHolder模式
+4. 创建了HomeFragment，测试了一下我们做的轮播图是不是正确。
+任务：
+完成。
+明天：首页的实现。
 
 

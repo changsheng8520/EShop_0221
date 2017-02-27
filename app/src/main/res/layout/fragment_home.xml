@@ -3,10 +3,16 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <include
-        layout="@layout/partial_action_bar"
+    <com.feicuiedu.eshop_0221.base.widgets.banner.BannerLayout
+        android:id="@+id/layout_banner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="180dp"></com.feicuiedu.eshop_0221.base.widgets.banner.BannerLayout>
+
+
+    <!--<include-->
+        <!--layout="@layout/partial_action_bar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"/>-->
 
 
     <!--第三方控件：刷新加载的控件-->
@@ -16,13 +22,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 -->
-        <ListView
-            android:id="@+id/list_home_goods"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@null"
-            android:dividerHeight="@dimen/spacing_small"
-            android:scrollbars="none"/>
+        <!--<ListView-->
+            <!--android:id="@+id/list_home_goods"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:divider="@null"-->
+            <!--android:dividerHeight="@dimen/spacing_small"-->
+            <!--android:scrollbars="none"/>-->
 
     <!--</in.srain.cube.views.ptr.PtrFrameLayout>-->
 

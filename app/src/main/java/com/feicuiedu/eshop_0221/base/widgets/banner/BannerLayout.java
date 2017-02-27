@@ -7,9 +7,11 @@ package com.feicuiedu.eshop_0221.base.widgets.banner;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.widget.RelativeLayout;
 
 import com.feicuiedu.eshop_0221.R;
@@ -26,7 +28,7 @@ import me.relex.circleindicator.CircleIndicator;
  * 自定义的轮播图控件
  * 1. 自动轮播
  * 2. 数据可随意设置(适配器的问题)
- * 3. 自动和手动的冲突
+ * 3. 自动和手动的冲突：触屏的时间+轮播时间
  */
 public class BannerLayout extends RelativeLayout{
 
@@ -39,6 +41,7 @@ public class BannerLayout extends RelativeLayout{
     private CyclingHandler mCyclingHandler;
     private Timer mCycleTimer;
     private TimerTask mCycleTask;
+    private long mResumecycleTime;
 
     // 代码中使用控件
     public BannerLayout(Context context) {
@@ -86,7 +89,6 @@ public class BannerLayout extends RelativeLayout{
         };
         // 任务（事件）、延时事件、循环时间
         mCycleTimer.schedule(mCycleTask,duration,duration);
-
     }
 
     @Override
@@ -97,6 +99,13 @@ public class BannerLayout extends RelativeLayout{
         mCycleTask.cancel();
         mCycleTimer = null;
         mCycleTask = null;
+    }
+
+    // 首先获取到我们触摸的时间
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        mResumecycleTime = System.currentTimeMillis()+duration;
+        return super.dispatchTouchEvent(ev);
     }
 
     // 切换到下一页的方法
@@ -120,6 +129,13 @@ public class BannerLayout extends RelativeLayout{
         }
     }
 
+    // 设置适配器的方法
+    public void setAdapter(BannerAdapter adapter){
+        mPagerBanner.setAdapter(adapter);
+        mIndicator.setViewPager(mPagerBanner);
+        adapter.registerDataSetObserver(mIndicator.getDataSetObserver());
+    }
+
     // 为了防止内部类持有外部类的引用而造成内存泄漏，所以静态内部类+弱引用的方式
     private static class CyclingHandler extends Handler{
 
@@ -137,6 +153,11 @@ public class BannerLayout extends RelativeLayout{
             if (mBannerReference==null) return;
             BannerLayout bannerLayout = mBannerReference.get();
             if (bannerLayout==null) return;
+
+            // 触摸之后时间还没过四秒，不去轮播
+            if (System.currentTimeMillis()<bannerLayout.mResumecycleTime){
+                return;
+            }
 
             // 切换到下一页
             bannerLayout.moveToNextPosition();
