@@ -77,4 +77,11 @@ OkHttp的使用一定要掌握！！
 1. 首页的数据的请求构建
 2. 一个轮播图和ListView
 
+1. 封装一个轮播图：组合控件来自定义视图
+    Viewpager
+    CircleIndicator:
+          1. 添加依赖：compile 'me.relex:circleindicator:1.2.2@aar'
+          2. 使用
+2. 封装的实现效果：
+
 

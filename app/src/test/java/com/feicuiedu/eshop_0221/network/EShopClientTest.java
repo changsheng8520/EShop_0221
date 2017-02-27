@@ -1,5 +1,7 @@
 package com.feicuiedu.eshop_0221.network;
 
+import android.test.AndroidTestCase;
+
 import com.feicuiedu.eshop_0221.network.entity.CategoryRsp;
 import com.feicuiedu.eshop_0221.network.entity.HomeBannerRsp;
 import com.feicuiedu.eshop_0221.network.entity.HomeCategoryRsp;
@@ -20,6 +22,7 @@ public class EShopClientTest {
 
     @Test
     public void getCategory() throws Exception {
+
         Call call = EShopClient.getInstance().getCategory();
         Response response = call.execute();
         String string = response.body().string();

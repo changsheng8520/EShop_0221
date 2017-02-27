@@ -41,4 +41,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     compile 'com.google.code.gson:gson:2.8.0'
+
+    // 圆点指示器的依赖
+    compile 'me.relex:circleindicator:1.2.2@aar'
 }

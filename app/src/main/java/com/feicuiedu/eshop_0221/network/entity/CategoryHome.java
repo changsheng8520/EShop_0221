@@ -5,7 +5,11 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class CategoryHome extends CategoryBase {
+public class CategoryHome  {
+
+    private int id;
+
+    private String name;
 
     @SerializedName("goods")
     private List<SimpleGoods> mHotGoodsList; // 首页分类的推荐商品.
