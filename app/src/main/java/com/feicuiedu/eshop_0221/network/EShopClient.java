@@ -47,4 +47,22 @@ public class EShopClient {
                 .build();
         return mOkHttpClient.newCall(request);
     }
+
+    // 首页：banner请求接口
+    public Call getHomeBanner(){
+        Request request = new Request.Builder()
+                .get()
+                .url(BASE_URL+"/home/data")
+                .build();
+        return mOkHttpClient.newCall(request);
+    }
+
+    // 首页：分类和推荐的商品
+    public Call getHomeCategory(){
+        Request request = new Request.Builder()
+                .get()
+                .url(BASE_URL+"/home/category")
+                .build();
+        return mOkHttpClient.newCall(request);
+    }
 }

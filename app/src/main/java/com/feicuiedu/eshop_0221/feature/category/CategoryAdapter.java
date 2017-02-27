@@ -45,6 +45,7 @@ public class CategoryAdapter extends BaseListAdapter<CategoryPrimary,CategoryAda
 
         @Override
         protected void bind(int position) {
+            // 数据的展示
             mTextCategory.setText(getItem(position).getName());
         }
     }

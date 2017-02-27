@@ -69,6 +69,7 @@ public abstract class BaseListAdapter<T,V extends BaseListAdapter.ViewHolder> ex
         }
         viewHolder = (ViewHolder) convertView.getTag();
 
+        // 绑定数据的方法
         viewHolder.bind(position);
 
         return convertView;
