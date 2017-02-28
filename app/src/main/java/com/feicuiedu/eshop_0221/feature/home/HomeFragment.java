@@ -7,11 +7,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.feicuiedu.eshop_0221.R;
 import com.feicuiedu.eshop_0221.base.BaseFragment;
+import com.feicuiedu.eshop_0221.base.widgets.banner.BannerAdapter;
+import com.feicuiedu.eshop_0221.base.widgets.banner.BannerLayout;
+import com.feicuiedu.eshop_0221.network.entity.Banner;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +39,9 @@ public class HomeFragment extends BaseFragment {
     @BindView(R.id.standard_refresh_layout)
     PtrFrameLayout mRefreshLayout;
 
+    private ImageView[] mIvPromotes = new ImageView[4];
+    private TextView mMTvPromoteGoods;
+
     public static HomeFragment newInstance() {
         return new HomeFragment();
     }
@@ -48,6 +55,37 @@ public class HomeFragment extends BaseFragment {
     protected void initView() {
         initToolbar();
         initPtr();
+
+        // 设置适配器
+        HomeGoodsAdapter goodsAdapter = new HomeGoodsAdapter();
+        mListHomeGoods.setAdapter(goodsAdapter);
+
+        // ListView的头布局
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.partial_home_header,mListHomeGoods,false);
+
+        // 找到头布局里面的控件
+        BannerLayout bannerLayout = ButterKnife.findById(view,R.id.layout_banner);
+        BannerAdapter<Banner> bannerAdapter = new BannerAdapter<Banner>() {
+            @Override
+            protected void bind(ViewHolder holder, Banner data) {
+                // 数据和视图的绑定
+                // TODO: 2017/2/28 图片展示待实现
+                holder.mImageView.setImageResource(R.drawable.image_holder_banner);
+            }
+        };
+        bannerLayout.setAdapter(bannerAdapter);
+
+        // 促销商品
+        mIvPromotes[0] = ButterKnife.findById(view,R.id.image_promote_one);
+        mIvPromotes[1] = ButterKnife.findById(view,R.id.image_promote_two);
+        mIvPromotes[2] = ButterKnife.findById(view,R.id.image_promote_three);
+        mIvPromotes[3] = ButterKnife.findById(view,R.id.image_promote_four);
+
+        // 促销单品的TextView
+        mMTvPromoteGoods = ButterKnife.findById(view, R.id.text_promote_goods);
+
+        mListHomeGoods.addHeaderView(view);
+
     }
 
     // 刷新的初始化
