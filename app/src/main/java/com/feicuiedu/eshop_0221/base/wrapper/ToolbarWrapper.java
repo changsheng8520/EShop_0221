@@ -41,7 +41,6 @@ public class ToolbarWrapper {
         mBaseActivity = (BaseActivity) fragment.getActivity();
         Toolbar toolbar = ButterKnife.findById(fragment.getView(),R.id.standard_toolbar);
         init(toolbar);
-
         // Fragment显示选项菜单
         fragment.setHasOptionsMenu(true);
 

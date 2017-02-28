@@ -16,6 +16,7 @@ import com.feicuiedu.eshop_0221.R;
 import com.feicuiedu.eshop_0221.base.BaseFragment;
 import com.feicuiedu.eshop_0221.base.widgets.banner.BannerAdapter;
 import com.feicuiedu.eshop_0221.base.widgets.banner.BannerLayout;
+import com.feicuiedu.eshop_0221.base.wrapper.PtrWrapper;
 import com.feicuiedu.eshop_0221.base.wrapper.ToastWrapper;
 import com.feicuiedu.eshop_0221.base.wrapper.ToolbarWrapper;
 import com.feicuiedu.eshop_0221.network.EShopClient;
@@ -54,13 +55,12 @@ public class HomeFragment extends BaseFragment {
     Toolbar mToolbar;
     @BindView(R.id.list_home_goods)
     ListView mListHomeGoods;
-    @BindView(R.id.standard_refresh_layout)
-    PtrFrameLayout mRefreshLayout;
 
     private ImageView[] mIvPromotes = new ImageView[4];
     private TextView mMTvPromoteGoods;
     private BannerAdapter<Banner> mBannerAdapter;
     private HomeGoodsAdapter mGoodsAdapter;
+    private PtrWrapper mPtrWrapper;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -75,7 +75,21 @@ public class HomeFragment extends BaseFragment {
     protected void initView() {
         // 利用Toolbar的包装类
         new ToolbarWrapper(this).setCustomTitle(R.string.home_title);
-        initPtr();
+
+        // 利用刷新的包装类
+        mPtrWrapper = new PtrWrapper(this,false) {
+            @Override
+            protected void onRefresh() {
+                getHomeData();
+            }
+
+            @Override
+            protected void onLoadMore() {
+
+            }
+        };
+        mPtrWrapper.postRefreshDelayed(50);
+
 
         // ListView的头布局
         View view = LayoutInflater.from(getContext()).inflate(R.layout.partial_home_header,mListHomeGoods,false);
@@ -108,45 +122,6 @@ public class HomeFragment extends BaseFragment {
         mGoodsAdapter = new HomeGoodsAdapter();
         mListHomeGoods.setAdapter(mGoodsAdapter);
     }
-
-    // 刷新的初始化
-    private void initPtr() {
-        // 设置刷新显示的头布局、刷新事件等
-        mRefreshLayout.disableWhenHorizontalMove(true);
-
-        // 设置刷新显示的头布局：默认的
-        PtrClassicDefaultHeader header = new PtrClassicDefaultHeader(getContext());
-        mRefreshLayout.setHeaderView(header);
-        mRefreshLayout.addPtrUIHandler(header);
-
-        // 设置刷新处理的Handler
-        mRefreshLayout.setPtrHandler(mPtrHandler);
-
-        // 一进来我们就去刷新：自动刷新的方法，延时任务然后自动刷新
-        mRefreshLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // 自动刷新
-                mRefreshLayout.autoRefresh();
-            }
-        },50);
-    }
-
-    private PtrDefaultHandler2 mPtrHandler = new PtrDefaultHandler2() {
-
-        // 加载时触发
-        @Override
-        public void onLoadMoreBegin(PtrFrameLayout frame) {
-
-        }
-
-        // 刷新的时候触发
-        @Override
-        public void onRefreshBegin(PtrFrameLayout frame) {
-            // 请求数据刷新页面
-            getHomeData();
-        }
-    };
 
     // 去请求数据
     public void getHomeData() {
@@ -203,7 +178,7 @@ public class HomeFragment extends BaseFragment {
         });
 
         // 拿到数据之后，停止刷新
-        mRefreshLayout.refreshComplete();
+        mPtrWrapper.stopRefresh();
     }
 
     // 设置促销单品的展示
