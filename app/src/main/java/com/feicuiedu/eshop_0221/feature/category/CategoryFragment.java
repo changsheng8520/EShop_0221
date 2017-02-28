@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.feicuiedu.eshop_0221.R;
 import com.feicuiedu.eshop_0221.base.BaseFragment;
+import com.feicuiedu.eshop_0221.base.wrapper.ToolbarWrapper;
 import com.feicuiedu.eshop_0221.network.EShopClient;
 import com.feicuiedu.eshop_0221.network.core.UICallback;
 import com.feicuiedu.eshop_0221.network.entity.CategoryPrimary;
@@ -131,16 +132,8 @@ public class CategoryFragment extends BaseFragment {
     }
 
     private void initToolbar() {
-        // Fragment显示选项菜单
-        setHasOptionsMenu(true);
-        // 处理toolbar
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(mToolbar);
-        // 处理actionbar不展示默认的标题
-        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-        // 设置左上方的返回箭头
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbarTitle.setText(R.string.category_title);
+        // 利用包装好的Toolbar
+        new ToolbarWrapper(this).setCustomTitle(R.string.category_title);
     }
 
     @Override

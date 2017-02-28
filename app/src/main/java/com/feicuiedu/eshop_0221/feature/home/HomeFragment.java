@@ -16,6 +16,8 @@ import com.feicuiedu.eshop_0221.R;
 import com.feicuiedu.eshop_0221.base.BaseFragment;
 import com.feicuiedu.eshop_0221.base.widgets.banner.BannerAdapter;
 import com.feicuiedu.eshop_0221.base.widgets.banner.BannerLayout;
+import com.feicuiedu.eshop_0221.base.wrapper.ToastWrapper;
+import com.feicuiedu.eshop_0221.base.wrapper.ToolbarWrapper;
 import com.feicuiedu.eshop_0221.network.EShopClient;
 import com.feicuiedu.eshop_0221.network.core.UICallback;
 import com.feicuiedu.eshop_0221.network.entity.Banner;
@@ -71,12 +73,9 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        initToolbar();
+        // 利用Toolbar的包装类
+        new ToolbarWrapper(this).setCustomTitle(R.string.home_title);
         initPtr();
-
-        // 设置适配器
-        mGoodsAdapter = new HomeGoodsAdapter();
-        mListHomeGoods.setAdapter(mGoodsAdapter);
 
         // ListView的头布局
         View view = LayoutInflater.from(getContext()).inflate(R.layout.partial_home_header,mListHomeGoods,false);
@@ -84,7 +83,6 @@ public class HomeFragment extends BaseFragment {
         // 找到头布局里面的控件
         BannerLayout bannerLayout = ButterKnife.findById(view,R.id.layout_banner);
         // 数据和视图的绑定
-// TODO: 2017/2/28 图片展示待实现
         mBannerAdapter = new BannerAdapter<Banner>() {
             @Override
             protected void bind(ViewHolder holder, Banner data) {
@@ -106,6 +104,9 @@ public class HomeFragment extends BaseFragment {
 
         mListHomeGoods.addHeaderView(view);
 
+        // 设置适配器
+        mGoodsAdapter = new HomeGoodsAdapter();
+        mListHomeGoods.setAdapter(mGoodsAdapter);
     }
 
     // 刷新的初始化
@@ -147,18 +148,6 @@ public class HomeFragment extends BaseFragment {
         }
     };
 
-    // 初始化Toolbar的操作
-    private void initToolbar() {
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        // 设置Toolbar作为ActionBar
-        activity.setSupportActionBar(mToolbar);
-        ActionBar actionBar = activity.getSupportActionBar();
-        if (actionBar!=null){
-            actionBar.setDisplayShowTitleEnabled(false);
-        }
-        mToolbarTitle.setText(R.string.home_title);
-    }
-
     // 去请求数据
     public void getHomeData() {
 
@@ -167,7 +156,7 @@ public class HomeFragment extends BaseFragment {
         bannerCall.enqueue(new UICallback() {
             @Override
             public void onFailureInUI(Call call, IOException e) {
-                Toast.makeText(getContext(), "请求错误"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                ToastWrapper.show("请求失败"+e.getMessage());
             }
 
             @Override
@@ -184,7 +173,7 @@ public class HomeFragment extends BaseFragment {
                         mBannerAdapter.reset(bannerRsp.getData().getBanners());
                         setPromoteGoods(bannerRsp.getData().getGoodsList());
                     }else {
-                        Toast.makeText(getContext(), bannerRsp.getStatus().getErrorDesc(), Toast.LENGTH_SHORT).show();
+                        ToastWrapper.show(bannerRsp.getStatus().getErrorDesc());
                     }
                 }
             }
@@ -195,7 +184,7 @@ public class HomeFragment extends BaseFragment {
         categoryCall.enqueue(new UICallback() {
             @Override
             public void onFailureInUI(Call call, IOException e) {
-                Toast.makeText(getContext(), "请求失败"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                ToastWrapper.show("请求失败"+e.getMessage());
             }
 
             @Override
@@ -207,7 +196,7 @@ public class HomeFragment extends BaseFragment {
                         // 拿到了推荐分类商品的数据
                         mGoodsAdapter.reset(categoryRsp.getData());
                     }else {
-                        Toast.makeText(getContext(), categoryRsp.getStatus().getErrorDesc(), Toast.LENGTH_SHORT).show();
+                        ToastWrapper.show(categoryRsp.getStatus().getErrorDesc());
                     }
                 }
             }
@@ -227,7 +216,7 @@ public class HomeFragment extends BaseFragment {
 //            mIvPromotes[i].setImageResource(R.drawable.image_holder_goods);
 
             // 圆形、灰度
-            Picasso.with(getContext()).load(picture.getLarge())
+            Picasso.with(getContext()).load(picture.getSmall())
                     .transform(new CropCircleTransformation())// 圆形
                     .transform(new GrayscaleTransformation())// 灰度
                     .into(mIvPromotes[i]);
@@ -235,7 +224,7 @@ public class HomeFragment extends BaseFragment {
             mIvPromotes[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getContext(), simpleGoods.getName(), Toast.LENGTH_SHORT).show();
+                    ToastWrapper.show(simpleGoods.getName());
                 }
             });
         }

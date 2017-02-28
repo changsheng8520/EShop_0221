@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.feicuiedu.eshop_0221.R;
 import com.feicuiedu.eshop_0221.base.BaseListAdapter;
+import com.feicuiedu.eshop_0221.base.wrapper.ToastWrapper;
 import com.feicuiedu.eshop_0221.network.entity.CategoryHome;
 import com.feicuiedu.eshop_0221.network.entity.Picture;
 import com.feicuiedu.eshop_0221.network.entity.SimpleGoods;
@@ -70,7 +71,7 @@ public class HomeGoodsAdapter extends BaseListAdapter<CategoryHome,HomeGoodsAdap
                     @Override
                     public void onClick(View v) {
                         SimpleGoods simpleGoods = goodsList.get(index);
-                        Toast.makeText(getContext(), simpleGoods.getName(), Toast.LENGTH_SHORT).show();
+                        ToastWrapper.show(simpleGoods.getName());
                     }
                 });
             }
@@ -78,7 +79,7 @@ public class HomeGoodsAdapter extends BaseListAdapter<CategoryHome,HomeGoodsAdap
 
         @OnClick(R.id.text_category)
         void onclick(){
-            Toast.makeText(getContext(),mCategoryHome.getName() , Toast.LENGTH_SHORT).show();
+            ToastWrapper.show(mCategoryHome.getName());
         }
     }
 
