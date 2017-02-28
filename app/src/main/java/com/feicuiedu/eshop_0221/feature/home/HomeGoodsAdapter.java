@@ -10,6 +10,7 @@ import com.feicuiedu.eshop_0221.base.BaseListAdapter;
 import com.feicuiedu.eshop_0221.network.entity.CategoryHome;
 import com.feicuiedu.eshop_0221.network.entity.Picture;
 import com.feicuiedu.eshop_0221.network.entity.SimpleGoods;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -59,8 +60,10 @@ public class HomeGoodsAdapter extends BaseListAdapter<CategoryHome,HomeGoodsAdap
 
                 // 取出商品List里面的商品图片
                 Picture picture = goodsList.get(i).getImg();
-                // TODO: 2017/2/28 图片加载待实现
-                mImageViews[i].setImageResource(R.drawable.image_holder_goods);
+//                mImageViews[i].setImageResource(R.drawable.image_holder_goods);
+                // Picasso加载图片
+                Picasso.with(getContext()).load(picture.getLarge()).into(mImageViews[i]);
+
                 final int index = i;
                 // 设置点击事件
                 mImageViews[i].setOnClickListener(new View.OnClickListener() {
