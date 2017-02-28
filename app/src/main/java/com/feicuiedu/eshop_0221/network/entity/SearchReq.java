@@ -3,6 +3,7 @@ package com.feicuiedu.eshop_0221.network.entity;
 
 import com.google.gson.annotations.SerializedName;
 
+// 搜索商品的请求体
 public class SearchReq {
 
     @SerializedName("filter") private Filter mFilter;

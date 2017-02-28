@@ -5,6 +5,8 @@ import android.test.AndroidTestCase;
 import com.feicuiedu.eshop_0221.network.entity.CategoryRsp;
 import com.feicuiedu.eshop_0221.network.entity.HomeBannerRsp;
 import com.feicuiedu.eshop_0221.network.entity.HomeCategoryRsp;
+import com.feicuiedu.eshop_0221.network.entity.SearchReq;
+import com.feicuiedu.eshop_0221.network.entity.SearchRsp;
 import com.google.gson.Gson;
 
 import org.junit.Test;
@@ -47,5 +49,15 @@ public class EShopClientTest {
         String string = response.body().string();
         HomeCategoryRsp categoryRsp = new Gson().fromJson(string, HomeCategoryRsp.class);
         assertTrue(categoryRsp.getStatus().isSucceed());
+    }
+
+    @Test
+    public void getSearch() throws Exception{
+        SearchReq searchReq = new SearchReq();
+        Call call = EShopClient.getInstance().getSearch(searchReq);
+        Response response = call.execute();
+        String json = response.body().string();
+        SearchRsp searchRsp = new Gson().fromJson(json, SearchRsp.class);
+        assertTrue(searchRsp.getStatus().isSucceed());
     }
 }

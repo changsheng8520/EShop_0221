@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+// 搜索商品的响应体
 public class SearchRsp {
 
     @SerializedName("status") private Status mStatus;
