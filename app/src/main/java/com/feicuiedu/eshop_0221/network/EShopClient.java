@@ -52,48 +52,48 @@ public class EShopClient {
     }
 
     // 分类页面：商品分类请求
-    public Call getCategory(){
-        Request request = new Request.Builder()
-                .get()
-                .url(BASE_URL+"/category")
-                .build();
-        return mOkHttpClient.newCall(request);
-    }
-
-    // 首页：banner请求接口
-    public Call getHomeBanner(){
-        Request request = new Request.Builder()
-                .get()
-                .url(BASE_URL+"/home/data")
-                .build();
-        return mOkHttpClient.newCall(request);
-    }
-
-    // 首页：分类和推荐的商品
-    public Call getHomeCategory(){
-        Request request = new Request.Builder()
-                .get()
-                .url(BASE_URL+"/home/category")
-                .build();
-        return mOkHttpClient.newCall(request);
-    }
-
-    // 搜索：搜索商品
-    public Call getSearch(SearchReq searchReq){
-
-        // 构建请求体
-        String param = new Gson().toJson(searchReq);
-        RequestBody body = new FormBody.Builder()
-                .add("json",param)
-                .build();
-
-        Request request = new Request.Builder()
-                .post(body)
-                .url(BASE_URL+"/search")
-                .build();
-
-        return mOkHttpClient.newCall(request);
-    }
+//    public Call getCategory(){
+//        Request request = new Request.Builder()
+//                .get()
+//                .url(BASE_URL+"/category")
+//                .build();
+//        return mOkHttpClient.newCall(request);
+//    }
+//
+//    // 首页：banner请求接口
+//    public Call getHomeBanner(){
+//        Request request = new Request.Builder()
+//                .get()
+//                .url(BASE_URL+"/home/data")
+//                .build();
+//        return mOkHttpClient.newCall(request);
+//    }
+//
+//    // 首页：分类和推荐的商品
+//    public Call getHomeCategory(){
+//        Request request = new Request.Builder()
+//                .get()
+//                .url(BASE_URL+"/home/category")
+//                .build();
+//        return mOkHttpClient.newCall(request);
+//    }
+//
+//    // 搜索：搜索商品
+//    public Call getSearch(SearchReq searchReq){
+//
+//        // 构建请求体
+//        String param = new Gson().toJson(searchReq);
+//        RequestBody body = new FormBody.Builder()
+//                .add("json",param)
+//                .build();
+//
+//        Request request = new Request.Builder()
+//                .post(body)
+//                .url(BASE_URL+"/search")
+//                .build();
+//
+//        return mOkHttpClient.newCall(request);
+//    }
 
     // 在单元测试的时候是同步请求直接拿到结果的，代码是做异步回调的方式。
     // 为了方便，我们把同步和异步都提供出来。

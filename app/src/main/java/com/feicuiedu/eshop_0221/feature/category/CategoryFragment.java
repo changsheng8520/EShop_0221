@@ -19,6 +19,8 @@ import com.feicuiedu.eshop_0221.R;
 import com.feicuiedu.eshop_0221.base.BaseFragment;
 import com.feicuiedu.eshop_0221.base.wrapper.ToolbarWrapper;
 import com.feicuiedu.eshop_0221.network.EShopClient;
+import com.feicuiedu.eshop_0221.network.core.ApiPath;
+import com.feicuiedu.eshop_0221.network.core.ResponseEntity;
 import com.feicuiedu.eshop_0221.network.core.UICallback;
 import com.feicuiedu.eshop_0221.network.entity.CategoryPrimary;
 import com.feicuiedu.eshop_0221.network.entity.CategoryRsp;
@@ -80,26 +82,18 @@ public class CategoryFragment extends BaseFragment {
             updateCategory();
         } else {
             // 去进行网络请求拿到数据
-            Call call = EShopClient.getInstance().getCategory();
-            call.enqueue(new UICallback() {
+            UICallback uiCallback = new UICallback() {
                 @Override
-                public void onFailureInUI(Call call, IOException e) {
-                    Toast.makeText(getContext(), "请求失败" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onResponseInUI(Call call, Response response) throws IOException {
-                    if (response.isSuccessful()) {
-                        CategoryRsp categoryRsp = new Gson().fromJson(response.body().string(), CategoryRsp.class);
-                        if (categoryRsp.getStatus().isSucceed()) {
-                            mData = categoryRsp.getData();
-                            // 数据有了之后，数据给一级分类，默认选择第一条，二级分类才能展示
-                            updateCategory();
-
-                        }
+                public void onBusinessResponse(boolean isSucces, ResponseEntity responseEntity) {
+                    if (isSucces) {
+                        CategoryRsp categoryRsp = (CategoryRsp) responseEntity;
+                        mData = categoryRsp.getData();
+                        // 数据有了之后，数据给一级分类，默认选择第一条，二级分类才能展示
+                        updateCategory();
                     }
                 }
-            });
+            };
+            EShopClient.getInstance().enqueue(ApiPath.CATEGORY,null,CategoryRsp.class,uiCallback);
         }
     }
 
