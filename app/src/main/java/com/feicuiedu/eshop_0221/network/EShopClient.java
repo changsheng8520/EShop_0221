@@ -1,14 +1,19 @@
 package com.feicuiedu.eshop_0221.network;
 
+import com.feicuiedu.eshop_0221.network.core.RequestParam;
+import com.feicuiedu.eshop_0221.network.core.ResponseEntity;
 import com.feicuiedu.eshop_0221.network.entity.CategoryRsp;
 import com.feicuiedu.eshop_0221.network.entity.SearchReq;
 import com.google.gson.Gson;
+
+import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
@@ -22,6 +27,7 @@ public class EShopClient {
 
     private static EShopClient shopClient;
     private final OkHttpClient mOkHttpClient;
+    private Gson mGson;
 
     public static synchronized EShopClient getInstance(){
         if (shopClient==null){
@@ -31,6 +37,8 @@ public class EShopClient {
     }
 
     private EShopClient() {
+
+        mGson = new Gson();
 
         // 日志拦截器的创建
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -84,4 +92,49 @@ public class EShopClient {
                 .build();
         return mOkHttpClient.newCall(request);
     }
+
+    // 在单元测试的时候是同步请求直接拿到结果的，代码是做异步回调的方式。
+    // 为了方便，我们把同步和异步都提供出来。
+
+    // 同步：直接拿到response里面的实体类数据
+    public <T extends ResponseEntity>T execute(String path,
+                                               RequestParam requestParam,
+                                               Class<T> clazz) throws IOException {
+
+        // 把请求的构建写到一个方法里面
+        Response response = newApiCall(path, requestParam).execute();
+
+        // 异步里面会不会也用到呢？所以写到一个方法里去
+        return getResponseEntity(response,clazz);
+    }
+
+    // 根据响应Response，将响应体转换成响应的实体类
+    private <T extends ResponseEntity>T getResponseEntity(Response response, Class<T> clazz) throws IOException {
+        // 没有成功
+        if (!response.isSuccessful()){
+            throw new IOException("Response code is"+response.code());
+        }
+        // 成功，转换成相应的实体类了
+        return mGson.fromJson(response.body().string(),clazz);
+    }
+
+    // 根据参数构建请求
+    private Call newApiCall(String path, RequestParam requestParam) {
+
+        // 拆开写
+        Request.Builder builder = new Request.Builder();
+        builder.url(BASE_URL+path);
+
+        // 有请求体的话，是Post请求
+        if (requestParam!=null){
+            String json = mGson.toJson(requestParam);
+            RequestBody requestBody = new FormBody.Builder()
+                    .add("json",json)
+                    .build();
+            builder.post(requestBody);
+        }
+        Request request = builder.build();
+        return mOkHttpClient.newCall(request);
+    }
+
 }

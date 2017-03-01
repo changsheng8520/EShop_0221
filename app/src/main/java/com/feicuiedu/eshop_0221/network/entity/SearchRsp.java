@@ -1,14 +1,13 @@
 package com.feicuiedu.eshop_0221.network.entity;
 
 
+import com.feicuiedu.eshop_0221.network.core.ResponseEntity;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 // 搜索商品的响应体
-public class SearchRsp {
-
-    @SerializedName("status") private Status mStatus;
+public class SearchRsp extends ResponseEntity{
 
     @SerializedName("data") private List<SimpleGoods> mData;
 
@@ -20,9 +19,5 @@ public class SearchRsp {
 
     public Paginated getPaginated() {
         return mPaginated;
-    }
-
-    public Status getStatus() {
-        return mStatus;
     }
 }

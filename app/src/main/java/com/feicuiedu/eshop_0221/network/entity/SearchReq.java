@@ -1,10 +1,11 @@
 package com.feicuiedu.eshop_0221.network.entity;
 
 
+import com.feicuiedu.eshop_0221.network.core.RequestParam;
 import com.google.gson.annotations.SerializedName;
 
 // 搜索商品的请求体
-public class SearchReq {
+public class SearchReq extends RequestParam{
 
     @SerializedName("filter") private Filter mFilter;
 
