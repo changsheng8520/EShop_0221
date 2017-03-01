@@ -2,6 +2,7 @@ package com.feicuiedu.eshop_0221.network;
 
 import com.feicuiedu.eshop_0221.network.core.RequestParam;
 import com.feicuiedu.eshop_0221.network.core.ResponseEntity;
+import com.feicuiedu.eshop_0221.network.core.UICallback;
 import com.feicuiedu.eshop_0221.network.entity.CategoryRsp;
 import com.feicuiedu.eshop_0221.network.entity.SearchReq;
 import com.google.gson.Gson;
@@ -90,6 +91,7 @@ public class EShopClient {
                 .post(body)
                 .url(BASE_URL+"/search")
                 .build();
+
         return mOkHttpClient.newCall(request);
     }
 
@@ -108,8 +110,23 @@ public class EShopClient {
         return getResponseEntity(response,clazz);
     }
 
+    // 异步回调：最后要创建UICallBack
+    public Call enqueue(String path,
+                        RequestParam requestParam,
+                        Class<? extends ResponseEntity> clazz,
+                        UICallback uiCallback){
+
+        // 构建call模型
+        Call call = newApiCall(path, requestParam);
+        // 告诉uicallback里面的数据要转换的类型
+        uiCallback.setResponseType(clazz);
+        // 为了规范，我们在方法里面直接执行异步方法，就需要一个UiCallback，所以通过参数传递
+        call.enqueue(uiCallback);
+        return call;
+    }
+
     // 根据响应Response，将响应体转换成响应的实体类
-    private <T extends ResponseEntity>T getResponseEntity(Response response, Class<T> clazz) throws IOException {
+    public  <T extends ResponseEntity>T getResponseEntity(Response response, Class<T> clazz) throws IOException {
         // 没有成功
         if (!response.isSuccessful()){
             throw new IOException("Response code is"+response.code());

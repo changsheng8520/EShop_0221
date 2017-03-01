@@ -3,6 +3,10 @@ package com.feicuiedu.eshop_0221.network.core;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.feicuiedu.eshop_0221.R;
+import com.feicuiedu.eshop_0221.base.utils.LogUtils;
+import com.feicuiedu.eshop_0221.base.wrapper.ToastWrapper;
+import com.feicuiedu.eshop_0221.network.EShopClient;
 import com.feicuiedu.eshop_0221.network.entity.Banner;
 import com.google.gson.Gson;
 
@@ -19,7 +23,7 @@ import okhttp3.Response;
  */
 
 // 为了统一处理OkHttp的Callback不能更新UI的问题
-public abstract class UICallback<T> implements Callback{
+public abstract class UICallback implements Callback{
     /**
      * 泛型
      * 如果T是String类型，List也必须是String的
@@ -42,8 +46,9 @@ public abstract class UICallback<T> implements Callback{
 //        return t;
 //    }
 
-    public UICallback() {
+    private Class<? extends ResponseEntity> mResponseType;
 
+    public UICallback() {
     }
 
     // 创建一个运行在主线程的Handler
@@ -74,9 +79,41 @@ public abstract class UICallback<T> implements Callback{
         });
     }
 
-    // 对外提供两个必须实现的方法：将onFailure、onResponse的数据传递出去。
-    public abstract void onFailureInUI(Call call, IOException e);
+    // 对成功和失败的处理
+    public void onFailureInUI(Call call, IOException e){
+        // 对于请求失败的时候处理
+        ToastWrapper.show(R.string.error_network);
+        LogUtils.error("onFailureInUi",e);
+        onBusinessResponse(false,null);
+    }
 
-    public abstract void onResponseInUI(Call call, Response response) throws IOException;
+    public void onResponseInUI(Call call, Response response) throws IOException{
+        if (response.isSuccessful()){
+            // 要转换成真正的实体类
+            ResponseEntity responseEntity = EShopClient.getInstance().getResponseEntity(response, mResponseType);
+
+            // 判断类为null
+            if (responseEntity==null || responseEntity.getStatus()==null){
+                throw new RuntimeException("Fatal Api Error");
+            }
+
+            // 判断是不是真正的拿到数据了
+            if (responseEntity.getStatus().isSucceed()){
+                // 成功，数据也有
+                onBusinessResponse(true,responseEntity);
+            }else {
+                ToastWrapper.show(responseEntity.getStatus().getErrorDesc());
+                onBusinessResponse(false,responseEntity);
+            }
+        }
+    }
+
+    // 告诉我们要转换的实际的实体类型
+    public void setResponseType(Class<? extends ResponseEntity> responseType){
+        mResponseType = responseType;
+    }
+
+    // 给使用者实现的一个方法：处理拿到数据
+    public abstract void onBusinessResponse(boolean isSucces,ResponseEntity responseEntity);
 
 }
